@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 using Oracle.ManagedDataAccess.Client;
 using Oracle.ManagedDataAccess.Types;
@@ -245,7 +246,7 @@ namespace WindowsFormsApp1
         public Allergic allergy;
         public Dictionary<string, string> Symptoms;
 
-        public UserDB getter(string nickName = "김봉주")
+        public static UserDB getter(string nickName = "김봉주")
         {
             UserDB userDB = new UserDB();
             using (OracleConnection connection = new OracleConnection(connectionString))
@@ -265,6 +266,7 @@ namespace WindowsFormsApp1
                         while (reader.Read())
                         {
                             userDB.nickName = reader.GetString(0);
+                            MessageBox.Show(reader.GetString(0));
                             userDB.allergy = (Allergic)reader.GetInt32(1);
                             //userDB.Symptoms[reader.GetString(2)] = reader.GetString(3);
                         }
