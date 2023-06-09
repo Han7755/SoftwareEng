@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using Oracle.ManagedDataAccess.Client;
 using Oracle.ManagedDataAccess.Types;
@@ -29,8 +29,8 @@ namespace WindowsFormsApp1
         Flour = 1 << 2,//곡류
         Crab = 1 << 3,//갑각류
         Almond = 1 << 4,//견과류
-        Fish= 1 << 5,//생선류
-        Molluscs= 1 << 6,//연체류
+        Fish = 1 << 5,//생선류
+        Molluscs = 1 << 6,//연체류
         Beef = 1 << 7,//육류
         Soybean = 1 << 8,//대두류
         /*Chicken = 1 << 8
@@ -39,10 +39,10 @@ namespace WindowsFormsApp1
     public class FoodDB
     {
         static string connectionString = "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=softwareeng.kro.kr)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=xe)));;User Id=SoftEng;Password=1";
-        public static List<Product> getter(string searchName = "",int a=0)
+        public static List<Product> getter(string searchName = "", int a = 0)
         {
             List<Product> products = new List<Product>();
-            products = SearchDB(searchName,a);
+            products = SearchDB(searchName, a);
             if (products.Count == 0)
             {
                 products = GetApiData(searchName);
@@ -50,9 +50,9 @@ namespace WindowsFormsApp1
             }
             return products;
         }
-        private static List<Product> SearchDB(string searchName,int a=0)
+        private static List<Product> SearchDB(string searchName, int a = 0)
         {
-            
+
             List<Product> Results = new List<Product>();
             using (OracleConnection connection = new OracleConnection(connectionString))
             {
@@ -63,9 +63,9 @@ namespace WindowsFormsApp1
                 //    sql = $"SELECT foodinfo.foodindex,foodname,foodmanu,foodallergy,nickname,commentdetail FROM FoodInfo WHERE FoodName = '{searchName}' AND foodcomment.foodindex = foodinfo.foodindex";
                 //else
                 //    sql = "SELECT foodinfo.foodindex,foodname,foodmanu,foodallergy,nickname,commentdetail FROM FoodInfo,foodcomment WHERE foodinfo.foodindex = foodcomment.foodindex";
-                if (searchName != "" && a==0)
+                if (searchName != "" && a == 0)
                     sql = $"SELECT foodinfo.foodindex,foodname,foodmanu,foodallergy FROM FoodInfo WHERE foodname LIKE '%{searchName}%'";
-                else if (searchName != "" && a!=0)
+                else if (searchName != "" && a != 0)
                     sql = $"SELECT foodinfo.foodindex,foodname,foodmanu,foodallergy FROM FoodInfo WHERE foodname ='{searchName}'";
                 else
                     sql = "SELECT foodinfo.foodindex,foodname,foodmanu,foodallergy FROM FoodInfo";
@@ -96,7 +96,7 @@ namespace WindowsFormsApp1
         }
         public bool AddComment(string nickname, string foodindex, string comment)
         {
-            
+
             try
             {
                 using (OracleConnection connection = new OracleConnection(connectionString))
@@ -120,7 +120,7 @@ namespace WindowsFormsApp1
         }
         public bool ModifyComment(string nickname, string foodindex, string comment)
         {
-            
+
             try
             {
                 using (OracleConnection connection = new OracleConnection(connectionString))
@@ -148,7 +148,7 @@ namespace WindowsFormsApp1
         }
         private static void InsertDataToDB(List<Product> products)
         {
-            
+
             using (OracleConnection connection = new OracleConnection(connectionString))
             {
                 // 데이터베이스 연결
@@ -215,7 +215,7 @@ namespace WindowsFormsApp1
             Allergic result = 0;
             if (input == "없음")
                 return Allergic.None;
-            if (input.Contains("아몬드")||input.Contains("땅콩")||input.Contains("호두"))
+            if (input.Contains("아몬드") || input.Contains("땅콩") || input.Contains("호두"))
                 result = result | Allergic.Almond;
             if (input.Contains("우유"))
                 result = result | Allergic.Milk;
@@ -231,9 +231,9 @@ namespace WindowsFormsApp1
                 result = result | Allergic.Soybean;
             if (input.Contains("달걀") || input.Contains("난류") || input.Contains("계란"))
                 result = result | Allergic.Egg;
-            if (input.Contains("게")||input.Contains("새우"))
+            if (input.Contains("게") || input.Contains("새우"))
                 result = result | Allergic.Crab;
-            if (input.Contains("문어")||input.Contains("조개")||input.Contains("오징어"))
+            if (input.Contains("문어") || input.Contains("조개") || input.Contains("오징어"))
                 result = result | Allergic.Molluscs;
             return result;
         }
@@ -245,11 +245,9 @@ namespace WindowsFormsApp1
         public Allergic allergy;
         public Dictionary<string, string> Symptoms;
 
-        public UserDB getter(string nickName="김봉주")
+        public UserDB getter(string nickName = "김봉주")
         {
             UserDB userDB = new UserDB();
-            
-            UserDB Results = new UserDB();
             using (OracleConnection connection = new OracleConnection(connectionString))
             {
                 // 데이터베이스 연결
@@ -274,12 +272,12 @@ namespace WindowsFormsApp1
                 }
                 connection.Close();
             }
-            return Results;
+            return userDB;
 
         }
         public static bool CheckNickName(string nickName)
         {
-            
+
             try
             {
                 using (OracleConnection connection = new OracleConnection(connectionString))
@@ -311,7 +309,7 @@ namespace WindowsFormsApp1
         public bool AddNickName(String name, Allergic allergy)
         {
             this.allergy = allergy;
-            
+
             try
             {
                 using (OracleConnection connection = new OracleConnection(connectionString))
@@ -326,7 +324,7 @@ namespace WindowsFormsApp1
 
                     connection.Close();
                 }
-                nickName=name;
+                nickName = name;
                 return false;
             }
             catch
@@ -337,7 +335,7 @@ namespace WindowsFormsApp1
         public bool AddAllergy(Allergic allergy)
         {
             this.allergy = allergy;
-            
+
             try
             {
                 using (OracleConnection connection = new OracleConnection(connectionString))
@@ -362,7 +360,7 @@ namespace WindowsFormsApp1
         public bool AddSymptoms(string symptoms, string foodname)//증상기록
         {
             this.Symptoms[foodname] = symptoms;
-            
+
             try
             {
                 using (OracleConnection connection = new OracleConnection(connectionString))
@@ -387,7 +385,7 @@ namespace WindowsFormsApp1
         public bool ModifySymptoms(string symptoms, string foodname)//증상수정
         {
             this.Symptoms[foodname] = symptoms;
-            
+
             try
             {
                 using (OracleConnection connection = new OracleConnection(connectionString))
@@ -412,7 +410,7 @@ namespace WindowsFormsApp1
         public bool DeleteSymptoms(string foodname)//증상기록 삭제
         {
             this.Symptoms.Remove(foodname);
-            
+
             try
             {
                 using (OracleConnection connection = new OracleConnection(connectionString))
@@ -434,7 +432,7 @@ namespace WindowsFormsApp1
                 return true;
             }
         }
-        
+
     }
     public class RecipeDB
     {
