@@ -147,6 +147,30 @@ namespace WindowsFormsApp1
                 return true;
             }
         }
+        public bool DeleteComment(string nickname, string foodindex, string comment)
+        {
+
+            try
+            {
+                using (OracleConnection connection = new OracleConnection(connectionString))
+                {
+                    // 데이터베이스 연결
+                    connection.Open();
+                    string sql = $"DELETE FROM foodcomment WHERE foodindex = '{foodindex}'AND nickname = '{nickname}'";
+                    using (OracleCommand command = new OracleCommand(sql, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+
+                    connection.Close();
+                }
+                return false;
+            }
+            catch
+            {
+                return true;
+            }
+        }
         private static void InsertDataToDB(List<Product> products)
         {
 
