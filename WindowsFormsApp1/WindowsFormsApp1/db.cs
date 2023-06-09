@@ -434,9 +434,4 @@ namespace WindowsFormsApp1
         }
 
     }
-    public class RecipeDB
-    {
-        public string RecipeID;
-        public string RecipeName;
-    }
 }
